@@ -19,6 +19,16 @@ app.get("/", (req, res) => {
   res.send("Node API");
 });
 
+// create products
+app.post("/api/products", async (req, res) => {
+  try {
+    const product = await Product.create(req.body);
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // gets all products from the database
 app.get("/api/products", async (req, res) => {
   try {
@@ -35,16 +45,6 @@ app.get("/api/product/:id", async (req, res) => {
     const { id } = req.params;
     const products = await Product.findById(id);
     res.status(200).json(products);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// creates products
-app.post("/api/products", async (req, res) => {
-  try {
-    const product = await Product.create(req.body);
-    res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
